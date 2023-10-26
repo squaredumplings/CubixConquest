@@ -1,54 +1,42 @@
 package everything.game;
 
 import java.awt.Graphics2D;
-import java.io.IOException;
-
-import javax.imageio.ImageIO;
+import java.awt.Point;
 
 import everything.top.Config;
 
 public class TileManager {
+
     
-    GamePanel gamePanel;
-    private Tile[] tile;
 
-    public TileManager(GamePanel gp) {
-        gamePanel = gp;
-        tile = new Tile[10];
+    public TileManager() {
         
-        getTileImage();
     }
 
-    public void getTileImage() {
-        try {
-            tile[1] = new Tile();
-            tile[1].image = ImageIO.read(getClass().getResourceAsStream("/Grass.png"));
+    // Draws tiles
+    public void draw(Graphics2D g2d, Point playerPos) {
 
-            tile[2] = new Tile();
-            tile[2].image = ImageIO.read(getClass().getResourceAsStream("/Stone.png"));
-            tile[2].collision = true;
-
-            tile[3] = new Tile();
-            tile[3].image = ImageIO.read(getClass().getResourceAsStream("/Water.png"));
-            tile[3].collision = true;
-            
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void draw(Graphics2D g2d) {
-        int msize = Config.MAPSIZE;
-        int tsize = Config.TILESIZE;
-
-        int drawStartX = -gamePanel.player.worldX + Config.WINDOWWIDTH / 2;
-        int drawStartY = -gamePanel.player.worldY + Config.WINDOWHEIGHT / 2;
+        // Top left corner of map where it starts beeing drawn relative to screen
+        Point drawStart = new Point(Config.WINDOWWIDTH / 2 -playerPos.x, Config.WINDOWHEIGHT / 2 -playerPos.y);
         
-        for (int i = 0; i < msize; i++) {
-            for (int j = 0; j < msize; j++) {
+        // Rendering limits for the tiles wich are on screen
+        int screenLeftTiles = (playerPos.x - Config.WINDOWWIDTH / 2) / Config.TILESIZE;
+        int screenRightTiles = (playerPos.x + Config.WINDOWWIDTH / 2) / Config.TILESIZE + 1;
+        int screenDownTiles = (playerPos.y + Config.WINDOWHEIGHT / 2) / Config.TILESIZE + 1;
+        int screenUpTiles = (playerPos.y - Config.WINDOWHEIGHT / 2) / Config.TILESIZE;
+
+        // Making sure limits don't go out of bounds
+        screenLeftTiles = Math.max(0, screenLeftTiles);
+        screenUpTiles = Math.max(0, screenUpTiles);
+        screenRightTiles = Math.min(screenRightTiles, Config.MAPSIZE);
+        screenDownTiles = Math.min(screenDownTiles, Config.MAPSIZE);
+        
+        // Draw only the tiles wich are on screen
+        for (int i = screenUpTiles; i < screenDownTiles; i++) {
+            for (int j = screenLeftTiles; j < screenRightTiles; j++) {
                 int type = Config.MAP[i][j];
-                g2d.drawImage(tile[type].image, drawStartX + j * tsize, drawStartY + i * tsize, 
-                    tsize, tsize, null);
+                g2d.drawImage(Config.tiles[type].image, drawStart.x + j * Config.TILESIZE, 
+                drawStart.y + i * Config.TILESIZE, Config.TILESIZE, Config.TILESIZE, null);
             }
         }
     }

@@ -1,10 +1,10 @@
 package everything.entities;
 
+import java.awt.Point;
 import java.awt.Rectangle;
 
 public class Entity {
-    public int worldX;
-    public int worldY;
+    public Point worldPos;
 
     public int speed;
 

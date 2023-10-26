@@ -1,9 +1,12 @@
 package everything.top;
 
-import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+
+import everything.game.Tile;
 
 public class Config {
     // resolution
@@ -19,14 +22,15 @@ public class Config {
     public static final int TILESIZE = 60;
 
     // map
-    public static final int MAPSIZE = 100;
-    public static final int OUTERWALL = 2;
+    public static final int MAPSIZE = 40;
+    public static Tile[] tiles = new Tile[10];;
     public static int[][] MAP = new int[MAPSIZE][MAPSIZE];
 
+
+    // Initializes map from file map.txt
     public static void initMap() {
         try {
-            Path path = Path.of(Config.class.getResource("/map.txt").getPath());
-            Scanner scanner = new Scanner(path); 
+            Scanner scanner = new Scanner(new File("src/main/resources/map.txt"));
             int number;
             int row;
             int col;
@@ -40,37 +44,23 @@ public class Config {
             scanner.close();
         } catch (IOException exception) {
             exception.printStackTrace();
-        }
-
-        
+        }   
     }
 
-    //small issue to fix: it makes the file in ~/cubixconquest
-    public static void makemap() {
-        for (int i = 0; i < MAPSIZE; i++) {
-            for (int j = 0; j < MAPSIZE; j++) {
-                if ((i < OUTERWALL) || (MAPSIZE - OUTERWALL - 1 < i) 
-                    || (j < OUTERWALL) || (MAPSIZE - OUTERWALL - 1 < j)) {
-                    MAP[i][j] = 2;
-                } else if ((40 < i) && (i < MAPSIZE - 40) && (40 < j) && (j < MAPSIZE - 40)) {
-                    MAP[i][j] = 3;
-                } else {
-                    MAP[i][j] = 1;
-                }
-            }
-        }
-
+    public static void initTiles() {
         try {
-            FileWriter myWriter = new FileWriter("map.txt");
-            for (int i = 0; i < MAPSIZE; i++) {
-                for (int j = 0; j < MAPSIZE; j++) {
-                    myWriter.write(String.valueOf(MAP[i][j]) + " ");
-                }
-                myWriter.write("\n");
-            }
-            myWriter.close();
+            tiles[1] = new Tile();
+            tiles[1].image = ImageIO.read(Config.class.getResourceAsStream("/Grass.png"));
+
+            tiles[2] = new Tile();
+            tiles[2].image = ImageIO.read(Config.class.getResourceAsStream("/Stone.png"));
+            tiles[2].collision = true;
+
+            tiles[3] = new Tile();
+            tiles[3].image = ImageIO.read(Config.class.getResourceAsStream("/Water.png"));
+            tiles[3].collision = true;
+            
         } catch (IOException e) {
-            System.out.println("This is busted");
             e.printStackTrace();
         }
     }

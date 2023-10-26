@@ -11,7 +11,7 @@ import everything.top.Config;
 
 public class GamePanel extends JPanel implements Runnable {  
 
-    TileManager tileManager = new TileManager(this);
+    TileManager tileManager = new TileManager();
     Thread gameThread;
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player();
@@ -52,7 +52,8 @@ public class GamePanel extends JPanel implements Runnable {
                 double remainingTime = nextDrawTime - System.nanoTime();
                 remainingTime /= 1e6;
 
-                remainingTime = Math.max(0, remainingTime); // to avoid negatives
+                // to avoid negatives
+                remainingTime = Math.max(0, remainingTime);
 
                 Thread.sleep((long) remainingTime);
 
@@ -64,18 +65,18 @@ public class GamePanel extends JPanel implements Runnable {
     }
 
     public void update() {
-        player.update(keyHandler);
-
         if (keyHandler.endGamePressed) {
             System.exit(43);
         }
+
+        player.update(keyHandler);      
     }
 
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
 
-        tileManager.draw(g2d);
+        tileManager.draw(g2d, player.worldPos);
 
         player.draw(g2d);
 
