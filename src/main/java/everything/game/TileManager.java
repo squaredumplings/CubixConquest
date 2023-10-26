@@ -49,8 +49,6 @@ public class TileManager {
                 int type = Config.MAP[i][j];
                 g2d.drawImage(tile[type].image, drawStartX + j * tsize, drawStartY + i * tsize, 
                     tsize, tsize, null);
-                // g2d.setColor(Color.green);
-                // g2d.drawRect(drawStartX + j * tsize, drawStartY + i * tsize, tsize, tsize);
             }
         }
     }
