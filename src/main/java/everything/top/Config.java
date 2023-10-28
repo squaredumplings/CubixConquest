@@ -22,12 +22,15 @@ public class Config {
     public static final int TILESIZE = 60;
 
     // map
-    public static final int MAPSIZE = 40;
-    public static Tile[] tiles = new Tile[10];;
+    public static final int MAPSIZE = 30;
+    public static final int TILETYPES = 10;
+    public static Tile[] tileTypes = new Tile[TILETYPES];
     public static int[][] MAP = new int[MAPSIZE][MAPSIZE];
 
+    // entities
+    public static final int MAXENT = 10;
 
-    // Initializes map from file map.txt
+    // Initialize map from file map.txt
     public static void initMap() {
         try {
             Scanner scanner = new Scanner(new File("src/main/resources/map.txt"));
@@ -47,18 +50,20 @@ public class Config {
         }   
     }
 
+    // Initialize tiles from resources
     public static void initTiles() {
         try {
-            tiles[1] = new Tile();
-            tiles[1].image = ImageIO.read(Config.class.getResourceAsStream("/Grass.png"));
+            tileTypes[1] = new Tile();
+            tileTypes[1].image = ImageIO.read(Config.class.getResourceAsStream("/Grass.png"));
 
-            tiles[2] = new Tile();
-            tiles[2].image = ImageIO.read(Config.class.getResourceAsStream("/Stone.png"));
-            tiles[2].collision = true;
+            tileTypes[2] = new Tile();
+            tileTypes[2].image = ImageIO.read(Config.class.getResourceAsStream("/Stone.png"));
+            tileTypes[2].collision = true;
 
-            tiles[3] = new Tile();
-            tiles[3].image = ImageIO.read(Config.class.getResourceAsStream("/Water.png"));
-            tiles[3].collision = true;
+            tileTypes[3] = new Tile();
+            tileTypes[3].image = ImageIO.read(Config.class.getResourceAsStream("/Water.png"));
+            tileTypes[3].slowdown = 40;
+            tileTypes[3].damage = 5;
             
         } catch (IOException e) {
             e.printStackTrace();

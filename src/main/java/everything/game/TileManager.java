@@ -7,17 +7,18 @@ import everything.top.Config;
 
 public class TileManager {
 
-    
+    Point drawStart;
 
     public TileManager() {
-        
+        drawStart = new Point(0, 0);
     }
 
     // Draws tiles
     public void draw(Graphics2D g2d, Point playerPos) {
 
         // Top left corner of map where it starts beeing drawn relative to screen
-        Point drawStart = new Point(Config.WINDOWWIDTH / 2 -playerPos.x, Config.WINDOWHEIGHT / 2 -playerPos.y);
+        drawStart = new Point(Config.WINDOWWIDTH / 2 - playerPos.x, 
+            Config.WINDOWHEIGHT / 2 - playerPos.y);
         
         // Rendering limits for the tiles wich are on screen
         int screenLeftTiles = (playerPos.x - Config.WINDOWWIDTH / 2) / Config.TILESIZE;
@@ -34,9 +35,11 @@ public class TileManager {
         // Draw only the tiles wich are on screen
         for (int i = screenUpTiles; i < screenDownTiles; i++) {
             for (int j = screenLeftTiles; j < screenRightTiles; j++) {
+                
                 int type = Config.MAP[i][j];
-                g2d.drawImage(Config.tiles[type].image, drawStart.x + j * Config.TILESIZE, 
-                drawStart.y + i * Config.TILESIZE, Config.TILESIZE, Config.TILESIZE, null);
+                
+                g2d.drawImage(Config.tileTypes[type].image, drawStart.x + j * Config.TILESIZE, 
+                    drawStart.y + i * Config.TILESIZE, Config.TILESIZE, Config.TILESIZE, null);
             }
         }
     }

@@ -17,7 +17,7 @@ public class Window extends JFrame {
        
     public Window() {
 
-        this.addGame();
+        this.addMenu();
         this.addDebug();
 
         // window settings
@@ -52,6 +52,7 @@ public class Window extends JFrame {
         Debug.log("adding game");
         game = new GamePanel();
         this.getLayeredPane().add(game, Integer.valueOf(0));
+        game.requestFocus();
         game.startGameThread();
     }
 

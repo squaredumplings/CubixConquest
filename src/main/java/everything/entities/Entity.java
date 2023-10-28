@@ -1,14 +1,19 @@
 package everything.entities;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 
 public class Entity {
     public Point worldPos;
+
+    public long lastDamageMilis;
+
+    public int maxHealth;
+
+    public int health;
 
     public int speed;
 
     public String direction;
 
-    public Rectangle solidArea;
+    public HitBox solidArea;
 }

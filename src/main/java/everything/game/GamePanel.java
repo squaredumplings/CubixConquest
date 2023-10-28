@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 import everything.entities.Player;
+import everything.entities.EnemyManager;
 import everything.top.Config;
 
 public class GamePanel extends JPanel implements Runnable {  
@@ -16,9 +17,7 @@ public class GamePanel extends JPanel implements Runnable {
     KeyHandler keyHandler = new KeyHandler();
     Player player = new Player();
     Collision colChecker = new Collision();
-    
-
-    int playerSpeed = 4;
+    EnemyManager enemyManager = new EnemyManager(player);
 
     public GamePanel() {
         //pane settings
@@ -69,7 +68,8 @@ public class GamePanel extends JPanel implements Runnable {
             System.exit(43);
         }
 
-        player.update(keyHandler);      
+        player.update(keyHandler); 
+        enemyManager.updateEnemies();     
     }
 
     public void paintComponent(Graphics g) {
@@ -79,6 +79,8 @@ public class GamePanel extends JPanel implements Runnable {
         tileManager.draw(g2d, player.worldPos);
 
         player.draw(g2d);
+
+        enemyManager.drawEnemies(g2d);
 
         g2d.dispose();
     }

@@ -1,12 +1,15 @@
 package everything.entities;
 
-public class Box {
+/*
+ * The coordinates of the top left corner (x, y) and the (with, heigh) of the rectangle.
+ */ 
+public class HitBox {
     public int x;
     public int y;
     public int w;
     public int h;
 
-    public Box(int cornerX, int cornerY, int width, int height) {
+    public HitBox(int cornerX, int cornerY, int width, int height) {
         this.x = cornerX;
         this.y = cornerY;
         this.w = width;
