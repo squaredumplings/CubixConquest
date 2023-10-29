@@ -35,7 +35,7 @@ public class Enemy extends Entity {
 
     public Enemy(int x, int y, Player p) {
         try {
-            image = ImageIO.read(getClass().getResourceAsStream("/enemy.png"));
+            image = ImageIO.read(getClass().getResourceAsStream("/Enemy.png"));
         } catch (IOException e) {
             e.printStackTrace();
         };

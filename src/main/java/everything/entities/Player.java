@@ -93,21 +93,21 @@ public class Player extends Entity {
             BufferedImage image = null;
 
             switch (direction) {
-                case "top": image = ImageIO.read(getClass().getResourceAsStream("/playerT.png"));
+                case "top": image = ImageIO.read(getClass().getResourceAsStream("/PlayerT.png"));
                     break;
-                case "topright": image = ImageIO.read(getClass().getResourceAsStream("/playerTR.png"));
+                case "topright": image = ImageIO.read(getClass().getResourceAsStream("/PlayerTR.png"));
                     break;
-                case "right": image = ImageIO.read(getClass().getResourceAsStream("/playerBR.png"));
+                case "right": image = ImageIO.read(getClass().getResourceAsStream("/PlayerBR.png"));
                     break;
-                case "bottomright": image = ImageIO.read(getClass().getResourceAsStream("/playerBR.png"));
+                case "bottomright": image = ImageIO.read(getClass().getResourceAsStream("/PlayerBR.png"));
                     break;
-                case "bottom": image = ImageIO.read(getClass().getResourceAsStream("/playerB.png"));
+                case "bottom": image = ImageIO.read(getClass().getResourceAsStream("/PlayerB.png"));
                     break;
-                case "bottomleft": image = ImageIO.read(getClass().getResourceAsStream("/playerBL.png"));
+                case "bottomleft": image = ImageIO.read(getClass().getResourceAsStream("/PlayerBL.png"));
                     break;
-                case "left": image = ImageIO.read(getClass().getResourceAsStream("/playerBL.png"));
+                case "left": image = ImageIO.read(getClass().getResourceAsStream("/PlayerBL.png"));
                     break;
-                case "topleft": image = ImageIO.read(getClass().getResourceAsStream("/playerTL.png"));
+                case "topleft": image = ImageIO.read(getClass().getResourceAsStream("/PlayerTL.png"));
                     break;
                 default:
                     break;
