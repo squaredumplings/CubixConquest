@@ -17,11 +17,11 @@ public class MenuPanel extends JLayeredPane implements ActionListener {
     
     public MenuPanel() {
         // images from resources
-        final ImageIcon backgroundImage = new ImageIcon("src/main/resources/Background.png");
-        final ImageIcon titleImage = new ImageIcon("src/main/resources/Title.png");
-        final ImageIcon startImage = new ImageIcon("src/main/resources/Start.png");
-        final ImageIcon optionsImage = new ImageIcon("src/main/resources/Options.png");
-        final ImageIcon quitImage = new ImageIcon("src/main/resources/Quit.png");
+        final ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/Background.png"));
+        final ImageIcon titleImage = new ImageIcon(getClass().getResource("/Title.png"));
+        final ImageIcon startImage = new ImageIcon(getClass().getResource("/Start.png"));
+        final ImageIcon optionsImage = new ImageIcon(getClass().getResource("/Options.png"));
+        final ImageIcon quitImage = new ImageIcon(getClass().getResource("/Quit.png"));
 
         //panel settings
         this.setBounds(0, 0, Config.WINDOWWIDTH, Config.WINDOWHEIGHT);

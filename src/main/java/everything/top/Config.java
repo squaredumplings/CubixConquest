@@ -1,6 +1,5 @@
 package everything.top;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -32,22 +31,18 @@ public class Config {
 
     // Initialize map from file map.txt
     public static void initMap() {
-        try {
-            Scanner scanner = new Scanner(new File("src/main/resources/map.txt"));
-            int number;
-            int row;
-            int col;
-            
-            for (int i = 0; scanner.hasNext(); i++) {
-                number = Integer.valueOf(scanner.nextInt());
-                row = i / MAPSIZE;
-                col = i % MAPSIZE;
-                MAP[row][col] = number;
-            }
-            scanner.close();
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }   
+        Scanner scanner = new Scanner(Config.class.getResourceAsStream("/map.txt"));
+        int number;
+        int row;
+        int col;
+        
+        for (int i = 0; scanner.hasNext(); i++) {
+            number = Integer.valueOf(scanner.nextInt());
+            row = i / MAPSIZE;
+            col = i % MAPSIZE;
+            MAP[row][col] = number;
+        }
+        scanner.close();
     }
 
     // Initialize tiles from resources
