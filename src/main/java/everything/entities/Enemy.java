@@ -3,6 +3,10 @@ package everything.entities;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import everything.game.Collision;
 import everything.top.Config;
@@ -11,6 +15,7 @@ public class Enemy extends Entity {
 
     private Player player;
     Point drawStart; // Top left corner where map starts beeing drawn
+    BufferedImage image;
     
     class Vector {
         int x;
@@ -29,6 +34,11 @@ public class Enemy extends Entity {
     }
 
     public Enemy(int x, int y, Player p) {
+        try {
+            image = ImageIO.read(getClass().getResourceAsStream("/enemy.png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        };
         player = p;
         worldPos = new Point(x, y);
         drawStart = new Point(0, 0);
@@ -37,24 +47,31 @@ public class Enemy extends Entity {
 
     private void setDefaultValues() {
         speed = 5;
-        maxHealth = 100;
+        maxHealth = 40;
         lastDamageMilis  = System.currentTimeMillis();
+        lastBiteMilis = System.currentTimeMillis();
         health = maxHealth;
         direction = "bottom"; 
         solidArea = new HitBox(-20, -20, 40, 40);
     }
-
+    
     public void update() {
         // calculating the distance to player
         int xdistance = player.worldPos.x - this.worldPos.x;
         int ydistance = player.worldPos.y - this.worldPos.y;
         Vector distanceToPlayer = new Vector(xdistance, ydistance);
 
+        // check if it can damage player
+        if ((System.currentTimeMillis() - lastBiteMilis) > 1000 && (distanceToPlayer.mod() < 40)) {
+            player.health -= 10;
+            lastBiteMilis = System.currentTimeMillis();
+        }
+
         // creating the speed components
         int multiFactor = distanceToPlayer.mod() / speed;
         int speedx = 0;
         int speedy = 0;
-        if (multiFactor != 0 && distanceToPlayer.mod() > 200) {
+        if (multiFactor != 0 && distanceToPlayer.mod() > 20) {
             speedx = xdistance / multiFactor;
             speedy = ydistance / multiFactor;
         }
@@ -65,7 +82,7 @@ public class Enemy extends Entity {
             (int) (speedy * Collision.touchSlow(worldPos.x, worldPos.y, solidArea) / 100.0));
 
         // take damage each second sitting on a bad tile
-        if (System.currentTimeMillis() - lastDamageMilis > 1000) {
+        if (System.currentTimeMillis() - lastDamageMilis > 200) {
             this.health -= Collision.touchDamage(worldPos.x, worldPos.y, solidArea);
             lastDamageMilis = System.currentTimeMillis();
         }
@@ -101,23 +118,22 @@ public class Enemy extends Entity {
         Point screenPos = new Point(drawStart.x + worldPos.x, drawStart.y + worldPos.y);
 
         // enemy
-        g2d.setColor(Color.pink);
-        g2d.fillRect(screenPos.x + solidArea.x, screenPos.y + solidArea.y,
-            solidArea.w, solidArea.h);
+        g2d.drawImage(image, screenPos.x - 30, screenPos.y - 30,
+            60, 60, null);
 
         // hitbox
-        g2d.setColor(Color.black);
-        g2d.drawRect(screenPos.x + solidArea.x, screenPos.y + solidArea.y, 
-            solidArea.w, solidArea.h);
+        // g2d.setColor(Color.black);
+        // g2d.drawRect(screenPos.x + solidArea.x, screenPos.y + solidArea.y, 
+        // solidArea.w, solidArea.h);
 
         // center point
-        g2d.setColor(Color.red);
-        g2d.drawRect(screenPos.x, screenPos.y, 1, 1);
+        // g2d.setColor(Color.red);
+        // g2d.drawRect(screenPos.x, screenPos.y, 1, 1);
 
         // healthbar
         g2d.setColor(Color.black);
         g2d.fillRect(screenPos.x - 26, screenPos.y - 41, 52, 7);
         g2d.setColor(Color.red);
-        g2d.fillRect(screenPos.x - 25, screenPos.y - 40, health / 2, 5);
+        g2d.fillRect(screenPos.x - 25, screenPos.y - 40, health * 10 / 8, 5);
     }
 }

@@ -16,21 +16,25 @@ import everything.top.Config;
 public class Player extends Entity {
 
     public Player() {
-        worldPos = new Point(Config.TILESIZE * 6, Config.TILESIZE * 6);
+        worldPos = new Point(50 * Config.TILESIZE, 45 * Config.TILESIZE);
         lastDamageMilis  = System.currentTimeMillis();
-        speed = 10;
+        speed = 8;
         health = 100;
         direction = "bottom"; 
         solidArea = new HitBox(-25, -10, 50, 30);
     }
 
     public void update(KeyHandler keyHandler) {
+        if (health <= 0){
+            System.exit(3);
+        }
+
         // speed after tile debuf
         int nowSpeed = 
             (int) (speed * Collision.touchSlow(worldPos.x, worldPos.y, solidArea) / 100.0);
 
-
-        if (System.currentTimeMillis() - lastDamageMilis > 1000) {
+        // take damage each second sitting on a bad tile
+        if (System.currentTimeMillis() - lastDamageMilis > 200) {
             this.health -= Collision.touchDamage(worldPos.x, worldPos.y, solidArea);
             lastDamageMilis = System.currentTimeMillis();
         }
@@ -87,7 +91,28 @@ public class Player extends Entity {
 
         try {
             BufferedImage image = null;
-            image = ImageIO.read(getClass().getResourceAsStream("/Player.png"));
+
+            switch (direction) {
+                case "top": image = ImageIO.read(getClass().getResourceAsStream("/playerT.png"));
+                    break;
+                case "topright": image = ImageIO.read(getClass().getResourceAsStream("/playerTR.png"));
+                    break;
+                case "right": image = ImageIO.read(getClass().getResourceAsStream("/playerBR.png"));
+                    break;
+                case "bottomright": image = ImageIO.read(getClass().getResourceAsStream("/playerBR.png"));
+                    break;
+                case "bottom": image = ImageIO.read(getClass().getResourceAsStream("/playerB.png"));
+                    break;
+                case "bottomleft": image = ImageIO.read(getClass().getResourceAsStream("/playerBL.png"));
+                    break;
+                case "left": image = ImageIO.read(getClass().getResourceAsStream("/playerBL.png"));
+                    break;
+                case "topleft": image = ImageIO.read(getClass().getResourceAsStream("/playerTL.png"));
+                    break;
+                default:
+                    break;
+            }
+            
             g2d.drawImage(image, (Config.WINDOWWIDTH - Config.TILESIZE) / 2, 
                 (Config.WINDOWHEIGHT - Config.TILESIZE) / 2, 
                 Config.TILESIZE, Config.TILESIZE, null); 
@@ -96,13 +121,13 @@ public class Player extends Entity {
         }
 
         // hitbox
-        g2d.setColor(Color.black);
-        g2d.drawRect(screenPos.x + solidArea.x, screenPos.y + solidArea.y, 
-            solidArea.w, solidArea.h);
+        // g2d.setColor(Color.black);
+        // g2d.drawRect(screenPos.x + solidArea.x, screenPos.y + solidArea.y, 
+        //     solidArea.w, solidArea.h);
 
         // center point
-        g2d.setColor(Color.red);
-        g2d.drawRect(screenPos.x, screenPos.y, 1, 1);
+        // g2d.setColor(Color.red);
+        // g2d.drawRect(screenPos.x, screenPos.y, 1, 1);
 
         // healthbar
         g2d.setColor(Color.black);

@@ -18,7 +18,6 @@ public class Window extends JFrame {
     public Window() {
 
         this.addMenu();
-        this.addDebug();
 
         // window settings
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

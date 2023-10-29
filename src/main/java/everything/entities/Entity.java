@@ -6,6 +6,7 @@ public class Entity {
     public Point worldPos;
 
     public long lastDamageMilis;
+    public long lastBiteMilis;
 
     public int maxHealth;
 

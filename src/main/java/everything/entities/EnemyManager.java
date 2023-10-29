@@ -2,24 +2,23 @@ package everything.entities;
 
 import java.awt.Graphics2D;
 import java.awt.Point;
-
+import java.util.ArrayList;
 import java.util.Random;
 
 import everything.top.Config;
 
 public class EnemyManager {
-    private Enemy[] enemies = new Enemy[Config.MAXENT];
+    private ArrayList<Enemy> enemies;
     Player player;
 
     private Point enemySpawn;
-    private int nrOfEnemies;
     Random rand;
     long lastSpawnTime;
 
     public EnemyManager(Player p) {
+        enemies = new ArrayList<Enemy>();
         player = p;
-        enemySpawn = new Point(20 * Config.TILESIZE, 20 * Config.TILESIZE);
-        nrOfEnemies = 0;
+        enemySpawn = new Point(50 * Config.TILESIZE, 45 * Config.TILESIZE);
         rand = new Random(39899324);
         lastSpawnTime = System.currentTimeMillis();
     }
@@ -28,24 +27,28 @@ public class EnemyManager {
         int randx = rand.nextInt(4 * Config.TILESIZE);
         int randy = rand.nextInt(4 * Config.TILESIZE);
 
-        enemies[nrOfEnemies] = new Enemy(enemySpawn.x + randx, enemySpawn.y + randy, player);
-        nrOfEnemies++;
+        enemies.add(new Enemy(enemySpawn.x + randx, enemySpawn.y + randy, player));
     }
 
     public void updateEnemies() {
-        if (System.currentTimeMillis() - lastSpawnTime > 3000 && nrOfEnemies < Config.MAXENT) {
+        // spawn enemies
+        if (System.currentTimeMillis() - lastSpawnTime > 5000 && enemies.size() < Config.MAXENT) {
             spawnEnemy();
             lastSpawnTime = System.currentTimeMillis();
         }
 
-        for (int i = 0; i < nrOfEnemies; i++) {
-            enemies[i].update();
+        // update
+        for (Enemy e : enemies){
+            e.update();
         }
+
+        // delete dead enemies
+        enemies.removeIf(e -> e.health<=0);
     }
 
     public void drawEnemies(Graphics2D g2d) {
-        for (int i = 0; i < nrOfEnemies; i++) {
-            enemies[i].draw(g2d);
+        for (Enemy e : enemies) {
+            e.draw(g2d);
         }
     }
 
